@@ -1,16 +1,18 @@
 import ListingCard from "@/components/ListingCard";
 import Section from "@/components/Section";
 import Badge from "@/components/Badge";
+import CitySelector from "@/components/CitySelector";
+import { indianCities } from "@/lib/locations";
 
 const sampleListings = [
   {
     id: "demo-1",
     title: "Premium Home Cleaning",
     category: "Home Care",
-    location: "Austin, TX",
+    location: "Andheri, Mumbai",
     durationMinutes: 180,
-    priceCents: 8500,
-    currency: "usd",
+    priceCents: 85000,
+    currency: "inr",
     providerName: "Sparkle Co.",
     rating: 4.9,
     reviewCount: 118
@@ -19,10 +21,10 @@ const sampleListings = [
     id: "demo-2",
     title: "Private Math Tutoring",
     category: "Education",
-    location: "San Jose, CA",
+    location: "Koramangala, Bangalore",
     durationMinutes: 60,
-    priceCents: 6500,
-    currency: "usd",
+    priceCents: 65000,
+    currency: "inr",
     providerName: "Elevate Tutors",
     rating: 4.8,
     reviewCount: 76
@@ -31,13 +33,49 @@ const sampleListings = [
     id: "demo-3",
     title: "Mobile Auto Detailing",
     category: "Auto",
-    location: "Miami, FL",
+    location: "Connaught Place, Delhi",
     durationMinutes: 120,
-    priceCents: 12000,
-    currency: "usd",
-    providerName: "SeaBreeze Auto",
+    priceCents: 120000,
+    currency: "inr",
+    providerName: "AutoShine India",
     rating: 4.7,
     reviewCount: 52
+  },
+  {
+    id: "demo-4",
+    title: "Yoga & Wellness Session",
+    category: "Wellness",
+    location: "Banjara Hills, Hyderabad",
+    durationMinutes: 90,
+    priceCents: 45000,
+    currency: "inr",
+    providerName: "ZenFit Studio",
+    rating: 4.9,
+    reviewCount: 203
+  },
+  {
+    id: "demo-5",
+    title: "Wedding Event Planning",
+    category: "Events",
+    location: "T. Nagar, Chennai",
+    durationMinutes: 240,
+    priceCents: 250000,
+    currency: "inr",
+    providerName: "Grand Celebrations",
+    rating: 4.6,
+    reviewCount: 87
+  },
+  {
+    id: "demo-6",
+    title: "Laptop & PC Repair",
+    category: "Tech",
+    location: "Salt Lake, Kolkata",
+    durationMinutes: 60,
+    priceCents: 35000,
+    currency: "inr",
+    providerName: "TechFix Pro",
+    rating: 4.8,
+    reviewCount: 145
   }
 ];
 
@@ -66,6 +104,7 @@ export default function HomePage() {
                 </span>
               ))}
             </div>
+            <CitySelector cities={indianCities} />
           </div>
           <div className="hero-card">
             <h3>Live marketplace stats</h3>

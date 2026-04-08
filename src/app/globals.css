@@ -4,6 +4,66 @@
 
 :root {
   color-scheme: light;
+  --bg-mist: #f4f7fb;
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-header: rgba(255, 255, 255, 0.75);
+  --text-ink: #0f1419;
+  --text-muted: #5a6b78;
+  --border-light: rgba(15, 20, 25, 0.08);
+  --border-input: rgba(15, 20, 25, 0.12);
+  --shadow-soft: 0 10px 40px rgba(12, 32, 56, 0.12);
+  --shadow-card: 0 12px 30px rgba(15, 20, 25, 0.12);
+  --hero-gradient-1: rgba(248, 195, 91, 0.35);
+  --hero-gradient-2: rgba(154, 209, 200, 0.35);
+  --hero-gradient-3: rgba(217, 120, 91, 0.18);
+  --btn-primary-bg: linear-gradient(135deg, #0b2b3c, #1f5e6f);
+  --btn-primary-text: #fff;
+  --btn-primary-shadow: 0 12px 30px rgba(11, 43, 60, 0.2);
+  --btn-ghost-text: #0b2b3c;
+  --btn-ghost-border: rgba(11, 43, 60, 0.2);
+  --pill-bg: rgba(154, 209, 200, 0.2);
+  --pill-city-bg: rgba(248, 195, 91, 0.2);
+  --pill-city-text: #7a4f05;
+  --area-chip-bg: rgba(154, 209, 200, 0.15);
+  --area-chip-text: #11605a;
+  --badge-mint-bg: rgba(154, 209, 200, 0.25);
+  --badge-mint-text: #11605a;
+  --badge-sun-bg: rgba(248, 195, 91, 0.3);
+  --badge-sun-text: #7a4f05;
+  --badge-clay-bg: rgba(217, 120, 91, 0.25);
+  --badge-clay-text: #7a2f1b;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg-mist: #05040e;
+  --bg-card: rgba(18, 12, 36, 0.45);
+  --bg-header: rgba(5, 4, 14, 0.75);
+  --text-ink: #fafafa;
+  --text-muted: #a1a1aa;
+  --border-light: rgba(255, 255, 255, 0.06);
+  --border-input: rgba(255, 255, 255, 0.1);
+  --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.8);
+  --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.8);
+  --hero-gradient-1: rgba(138, 43, 226, 0.45);
+  --hero-gradient-2: rgba(0, 119, 255, 0.45);
+  --hero-gradient-3: rgba(255, 120, 50, 0.25);
+  --btn-primary-bg: linear-gradient(135deg, #a03cff, #0077ff);
+  --btn-primary-text: #fafafa;
+  --btn-primary-shadow: 0 12px 30px rgba(160, 60, 255, 0.4);
+  --btn-ghost-text: #e0b0ff;
+  --btn-ghost-border: rgba(160, 60, 255, 0.4);
+  --pill-bg: rgba(138, 43, 226, 0.15);
+  --pill-city-bg: rgba(0, 119, 255, 0.15);
+  --pill-city-text: #66b3ff;
+  --area-chip-bg: rgba(138, 43, 226, 0.1);
+  --area-chip-text: #cfa8ff;
+  --badge-mint-bg: rgba(154, 209, 200, 0.15);
+  --badge-mint-text: #9ad1c8;
+  --badge-sun-bg: rgba(248, 195, 91, 0.15);
+  --badge-sun-text: #f8c35b;
+  --badge-clay-bg: rgba(217, 120, 91, 0.15);
+  --badge-clay-text: #d9785b;
 }
 
 * {
@@ -13,8 +73,8 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  color: #0f1419;
-  background: #f4f7fb;
+  color: var(--text-ink);
+  background: var(--bg-mist);
 }
 
 h1, h2, h3, h4 {
@@ -32,10 +92,10 @@ a {
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(1200px circle at 20% 10%, rgba(248, 195, 91, 0.35), transparent 60%),
-    radial-gradient(900px circle at 80% 15%, rgba(154, 209, 200, 0.35), transparent 55%),
-    radial-gradient(700px circle at 50% 80%, rgba(217, 120, 91, 0.18), transparent 55%),
-    linear-gradient(180deg, #f4f7fb, #ffffff 60%);
+    radial-gradient(1200px circle at 20% 10%, var(--hero-gradient-1), transparent 60%),
+    radial-gradient(900px circle at 80% 15%, var(--hero-gradient-2), transparent 55%),
+    radial-gradient(700px circle at 50% 80%, var(--hero-gradient-3), transparent 55%),
+    linear-gradient(180deg, var(--bg-mist), var(--bg-card) 60%);
 }
 
 .main {
@@ -51,8 +111,8 @@ a {
   position: sticky;
   top: 0;
   backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.75);
-  border-bottom: 1px solid rgba(15, 20, 25, 0.08);
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-light);
   z-index: 10;
   animation: drop 0.6s ease-out both;
 }
@@ -78,7 +138,7 @@ a {
 }
 
 .nav-link {
-  color: #1c2a33;
+  color: var(--text-ink);
 }
 
 .nav-actions {
@@ -96,21 +156,21 @@ a {
 }
 
 .button.primary {
-  background: linear-gradient(135deg, #0b2b3c, #1f5e6f);
-  color: #fff;
-  box-shadow: 0 12px 30px rgba(11, 43, 60, 0.2);
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  box-shadow: var(--btn-primary-shadow);
 }
 
 .button.ghost {
   background: transparent;
-  color: #0b2b3c;
-  border: 1px solid rgba(11, 43, 60, 0.2);
+  color: var(--btn-ghost-text);
+  border: 1px solid var(--btn-ghost-border);
 }
 
 .button.outline {
-  background: #fff;
-  border: 1px solid rgba(15, 20, 25, 0.15);
-  color: #0f1419;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  color: var(--text-ink);
 }
 
 .button:hover {
@@ -131,10 +191,12 @@ a {
 }
 
 .hero-card {
-  background: #fff;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 28px;
   border-radius: 24px;
-  box-shadow: 0 14px 36px rgba(12, 32, 56, 0.12);
+  box-shadow: var(--shadow-card);
   position: relative;
   overflow: hidden;
   animation: float-in 0.9s ease-out both;
@@ -147,7 +209,7 @@ a {
   right: -20%;
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(248, 195, 91, 0.35), transparent 60%);
+  background: radial-gradient(circle, var(--hero-gradient-1), transparent 60%);
   pointer-events: none;
 }
 
@@ -166,7 +228,7 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.24em;
   font-size: 0.72rem;
-  color: #5a6b78;
+  color: var(--text-muted);
 }
 
 .section {
@@ -180,10 +242,12 @@ a {
 }
 
 .card {
-  background: #fff;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
   padding: 20px;
-  border: 1px solid rgba(15, 20, 25, 0.08);
+  border: 1px solid var(--border-light);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -191,7 +255,7 @@ a {
 
 .card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 18px 35px rgba(15, 20, 25, 0.12);
+  box-shadow: var(--shadow-soft);
 }
 
 .card::before {
@@ -255,7 +319,7 @@ a {
   border-radius: 18px;
   object-fit: cover;
   min-height: 220px;
-  border: 1px solid rgba(15, 20, 25, 0.08);
+  border: 1px solid var(--border-light);
 }
 
 .detail-columns {
@@ -273,8 +337,92 @@ a {
 .pill {
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(154, 209, 200, 0.2);
+  background: var(--pill-bg);
   font-size: 0.8rem;
+}
+
+.pill-city {
+  background: var(--pill-city-bg);
+  color: var(--pill-city-text);
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.pill-city:hover {
+  background: var(--pill-city-bg); /* Use base var or add a hover var later, keeping it simple for now, maybe add opacity if needed, but it's okay */
+  opacity: 0.8;
+  transform: translateY(-1px);
+}
+
+.pill-active {
+  background: var(--pill-city-text) !important;
+  color: var(--bg-card);
+  box-shadow: 0 4px 12px var(--shadow-card);
+}
+
+.city-selector {
+  margin-top: 8px;
+}
+
+.city-areas-panel {
+  margin-top: 16px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  animation: rise 0.35s ease-out both;
+}
+
+.city-areas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.city-areas-close {
+  background: var(--border-light);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.city-areas-close:hover {
+  background: var(--border-input);
+}
+
+.city-areas-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.area-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--area-chip-bg);
+  font-size: 0.82rem;
+  color: var(--area-chip-text);
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.area-chip:hover {
+  background: var(--pill-bg); /* Reusing pill bg which is slightly darker than area chip */
+  transform: translateY(-1px);
 }
 
 .badge {
@@ -285,22 +433,22 @@ a {
 }
 
 .badge-mint {
-  background: rgba(154, 209, 200, 0.25);
-  color: #11605a;
+  background: var(--badge-mint-bg);
+  color: var(--badge-mint-text);
 }
 
 .badge-sun {
-  background: rgba(248, 195, 91, 0.3);
-  color: #7a4f05;
+  background: var(--badge-sun-bg);
+  color: var(--badge-sun-text);
 }
 
 .badge-clay {
-  background: rgba(217, 120, 91, 0.25);
-  color: #7a2f1b;
+  background: var(--badge-clay-bg);
+  color: var(--badge-clay-text);
 }
 
 .muted {
-  color: #5a6b78;
+  color: var(--text-muted);
 }
 
 .field {
@@ -311,8 +459,10 @@ a {
 
 .field input, .field textarea, .field select {
   border-radius: 12px;
-  border: 1px solid rgba(15, 20, 25, 0.12);
+  border: 1px solid var(--border-input);
   padding: 10px 12px;
+  background-color: var(--bg-card);
+  color: var(--text-ink);
 }
 
 .form-grid {
@@ -325,26 +475,30 @@ a {
   grid-template-columns: 1.4fr 1fr 1fr 0.7fr 0.7fr auto;
   gap: 12px;
   align-items: center;
-  background: #fff;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 16px;
   border-radius: 18px;
-  border: 1px solid rgba(15, 20, 25, 0.08);
+  border: 1px solid var(--border-light);
   margin-bottom: 24px;
-  box-shadow: 0 12px 26px rgba(15, 20, 25, 0.08);
+  box-shadow: var(--shadow-card);
   animation: fade-in 0.8s ease-out both;
 }
 
 .filter-bar input,
 .filter-bar select {
   border-radius: 12px;
-  border: 1px solid rgba(15, 20, 25, 0.12);
+  border: 1px solid var(--border-input);
   padding: 10px 12px;
+  background-color: var(--bg-card);
+  color: var(--text-ink);
 }
 
 .footer {
   padding: 40px 0;
-  border-top: 1px solid rgba(15, 20, 25, 0.08);
-  background: #fff;
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-card);
 }
 
 @keyframes fade-in {
@@ -412,4 +566,21 @@ a {
   .detail-columns {
     grid-template-columns: 1fr;
   }
+}
+
+.dark .page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .main,
+.dark .header,
+.dark .footer {
+  position: relative;
+  z-index: 1;
 }

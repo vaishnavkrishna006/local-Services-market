@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { href: "/listings", label: "Explore" },
@@ -22,6 +23,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="nav-actions">
+          <ThemeToggle />
           <Link href="/login" className="button ghost">
             Log in
           </Link>
