@@ -12,13 +12,14 @@ function parseNumber(value: string | undefined) {
 export default async function ListingsPage({
   searchParams
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const q = typeof searchParams.q === "string" ? searchParams.q : "";
-  const category = typeof searchParams.category === "string" ? searchParams.category : "";
-  const location = typeof searchParams.location === "string" ? searchParams.location : "";
-  const minPrice = parseNumber(typeof searchParams.minPrice === "string" ? searchParams.minPrice : undefined);
-  const maxPrice = parseNumber(typeof searchParams.maxPrice === "string" ? searchParams.maxPrice : undefined);
+  const resolvedParams = await searchParams;
+  const q = typeof resolvedParams.q === "string" ? resolvedParams.q : "";
+  const category = typeof resolvedParams.category === "string" ? resolvedParams.category : "";
+  const location = typeof resolvedParams.location === "string" ? resolvedParams.location : "";
+  const minPrice = parseNumber(typeof resolvedParams.minPrice === "string" ? resolvedParams.minPrice : undefined);
+  const maxPrice = parseNumber(typeof resolvedParams.maxPrice === "string" ? resolvedParams.maxPrice : undefined);
 
   const listings = await db.serviceListing.findMany({
     where: {

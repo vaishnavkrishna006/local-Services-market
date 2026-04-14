@@ -95,7 +95,7 @@ model ServiceListing {
   category    String
   durationMinutes Int        @default(60)
   priceCents  Int
-  currency    String         @default("usd")
+  currency    String         @default("inr")
   location    String
   serviceArea String?
   highlights  String[]       @default([])
@@ -181,7 +181,7 @@ model Payment {
   stripeCheckoutSessionId  String?
   status                   PaymentStatus @default(REQUIRES_PAYMENT)
   amountCents              Int
-  currency                 String        @default("usd")
+  currency                 String        @default("inr")
   platformFeeCents         Int           @default(0)
   tipCents                 Int           @default(0)
   createdAt                DateTime      @default(now())
@@ -208,4 +208,15 @@ model AdminAction {
   action     String
   notes      String?
   createdAt  DateTime @default(now())
+}
+
+model OTP {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  verified  Boolean  @default(false)
+  
+  @@unique([email, code])
 }

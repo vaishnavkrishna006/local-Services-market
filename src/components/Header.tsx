@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/current-user";
 
 const links = [
   { href: "/listings", label: "Explore" },
@@ -7,7 +8,9 @@ const links = [
   { href: "/admin", label: "Admin" }
 ];
 
-export default function Header() {
+export default async function Header() {
+  const user = await getCurrentUser();
+
   return (
     <header className="header">
       <div className="container header-inner">
@@ -22,12 +25,25 @@ export default function Header() {
           ))}
         </nav>
         <div className="nav-actions">
-          <Link href="/login" className="button ghost">
-            Log in
-          </Link>
-          <Link href="/register" className="button primary">
-            Get started
-          </Link>
+          {user ? (
+            <>
+              <span style={{ color: "#666" }}>
+                Welcome, {user.name}
+              </span>
+              <Link href="/profile" className="button ghost">
+                Profile
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="button ghost">
+                Log in
+              </Link>
+              <Link href="/register" className="button primary">
+                Get started
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

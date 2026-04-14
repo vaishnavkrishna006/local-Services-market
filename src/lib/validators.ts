@@ -18,7 +18,7 @@ export const listingSchema = z.object({
   category: z.string().min(2),
   durationMinutes: z.number().int().min(15).max(480).optional(),
   priceCents: z.number().int().min(100),
-  currency: z.string().default("usd"),
+  currency: z.string().default("inr"),
   location: z.string().min(2),
   serviceArea: z.string().min(2).optional(),
   imageUrl: z.string().url().optional(),

@@ -6,10 +6,11 @@ import BookingForm from "@/components/BookingForm";
 export default async function ListingDetailPage({
   params
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const listing = await db.serviceListing.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       provider: { select: { name: true } },
       reviews: true

@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { db } from "@/lib/db";
 
 export async function getCurrentUser() {
-  const token = cookies().get("session")?.value;
+  const token = (await cookies()).get("session")?.value;
   if (!token) return null;
 
   const session = await db.session.findUnique({

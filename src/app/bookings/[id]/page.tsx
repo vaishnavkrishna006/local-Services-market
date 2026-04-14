@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
 
-export default async function BookingDetailPage({ params }: { params: { id: string } }) {
+export default async function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const booking = await db.booking.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { listing: true, payment: true, customer: true, provider: true }
   });
 
