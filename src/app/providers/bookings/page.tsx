@@ -16,7 +16,7 @@ export default async function ProviderBookingsPage() {
   return (
     <div className="container section">
       <div className="card">
-        <h2>Provider bookings</h2>
+        <h2>Local Pro bookings</h2>
         <p className="muted">Track upcoming jobs and payment status.</p>
         <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
           {bookings.map((booking) => (

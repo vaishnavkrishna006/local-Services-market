@@ -1,13 +1,18 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/current-user";
+import { redirect } from "next/navigation";
 
 export default async function ProviderDashboard() {
   const user = await getCurrentUser();
 
+  if (!user || user.role !== "PROVIDER") {
+    redirect("/login");
+  }
+
   return (
     <div className="container section">
       <div className="card" style={{ display: "grid", gap: 16 }}>
-        <h2>Provider dashboard</h2>
+        <h2>Local Pro dashboard</h2>
         <p className="muted">
           {user
             ? `Welcome back, ${user.name}. Manage your listings and payouts.`

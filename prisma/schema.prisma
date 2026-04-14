@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -41,7 +41,7 @@ enum ReportStatus {
 }
 
 model User {
-  id            String           @id @default(cuid())
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   email         String           @unique
   passwordHash  String
@@ -61,17 +61,17 @@ model User {
 }
 
 model Session {
-  id        String   @id @default(cuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   token     String   @unique
-  userId    String
+  userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
   expiresAt DateTime
   createdAt DateTime @default(now())
 }
 
 model ProviderProfile {
-  id              String   @id @default(cuid())
-  userId          String   @unique
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @unique @db.ObjectId
   user            User     @relation(fields: [userId], references: [id])
   displayName     String
   companyName     String?
@@ -87,8 +87,8 @@ model ProviderProfile {
 }
 
 model ServiceListing {
-  id          String         @id @default(cuid())
-  providerId  String
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  providerId  String         @db.ObjectId
   provider    User           @relation("ProviderListings", fields: [providerId], references: [id])
   title       String
   description String
@@ -112,8 +112,8 @@ model ServiceListing {
 }
 
 model Availability {
-  id        String   @id @default(cuid())
-  listingId String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  listingId String   @db.ObjectId
   listing   ServiceListing @relation(fields: [listingId], references: [id])
   dayOfWeek Int
   startTime String
@@ -121,12 +121,12 @@ model Availability {
 }
 
 model Booking {
-  id          String        @id @default(cuid())
-  listingId   String
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  listingId   String        @db.ObjectId
   listing     ServiceListing @relation(fields: [listingId], references: [id])
-  customerId  String
+  customerId  String        @db.ObjectId
   customer    User          @relation("CustomerBookings", fields: [customerId], references: [id])
-  providerId  String
+  providerId  String        @db.ObjectId
   provider    User          @relation("ProviderBookings", fields: [providerId], references: [id])
   status      BookingStatus @default(PENDING)
   startAt     DateTime
@@ -143,12 +143,12 @@ model Booking {
 }
 
 model Review {
-  id         String   @id @default(cuid())
-  bookingId  String   @unique
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId  String   @unique @db.ObjectId
   booking    Booking  @relation(fields: [bookingId], references: [id])
-  listingId  String
+  listingId  String   @db.ObjectId
   listing    ServiceListing @relation(fields: [listingId], references: [id])
-  customerId String
+  customerId String   @db.ObjectId
   customer   User     @relation(fields: [customerId], references: [id])
   rating     Int
   comment    String?
@@ -156,26 +156,26 @@ model Review {
 }
 
 model MessageThread {
-  id        String   @id @default(cuid())
-  bookingId String   @unique
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId String   @unique @db.ObjectId
   booking   Booking  @relation(fields: [bookingId], references: [id])
   messages  Message[]
   createdAt DateTime @default(now())
 }
 
 model Message {
-  id        String   @id @default(cuid())
-  threadId  String
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  threadId  String   @db.ObjectId
   thread    MessageThread @relation(fields: [threadId], references: [id])
-  senderId  String
+  senderId  String   @db.ObjectId
   sender    User     @relation(fields: [senderId], references: [id])
   body      String
   createdAt DateTime @default(now())
 }
 
 model Payment {
-  id                       String        @id @default(cuid())
-  bookingId                String        @unique
+  id                       String        @id @default(auto()) @map("_id") @db.ObjectId
+  bookingId                String        @unique @db.ObjectId
   booking                  Booking       @relation(fields: [bookingId], references: [id])
   stripePaymentIntentId    String?
   stripeCheckoutSessionId  String?
@@ -189,10 +189,10 @@ model Payment {
 }
 
 model Report {
-  id         String       @id @default(cuid())
-  reporterId String
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  reporterId String       @db.ObjectId
   reporter   User         @relation(fields: [reporterId], references: [id])
-  listingId  String
+  listingId  String       @db.ObjectId
   listing    ServiceListing @relation(fields: [listingId], references: [id])
   reason     String
   status     ReportStatus  @default(OPEN)
@@ -200,8 +200,8 @@ model Report {
 }
 
 model AdminAction {
-  id         String   @id @default(cuid())
-  adminId    String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  adminId    String   @db.ObjectId
   admin      User     @relation(fields: [adminId], references: [id])
   targetType String
   targetId   String

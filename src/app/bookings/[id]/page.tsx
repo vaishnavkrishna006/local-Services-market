@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
 
-export default async function BookingDetailPage({ params }: { params: { id: string } }) {
+export default async function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const booking = await db.booking.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { listing: true, payment: true, customer: true, provider: true }
   });
 
@@ -15,7 +16,7 @@ export default async function BookingDetailPage({ params }: { params: { id: stri
       <div className="card" style={{ display: "grid", gap: 12 }}>
         <h2>{booking.listing.title}</h2>
         <p className="muted">Customer: {booking.customer.name}</p>
-        <p className="muted">Provider: {booking.provider.name}</p>
+        <p className="muted">Local Pro: {booking.provider.name}</p>
         <p>Status: {booking.status}</p>
         <p>Service: {formatMoney(booking.totalCents, booking.listing.currency)}</p>
         <p>Tip: {formatMoney(booking.tipCents, booking.listing.currency)}</p>

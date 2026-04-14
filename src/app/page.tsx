@@ -90,12 +90,12 @@ export default function HomePage() {
             <p className="eyebrow">Trusted local pros</p>
             <h1>Book verified services in minutes, not days.</h1>
             <p className="muted">
-              LocalPulse connects customers with vetted providers. Pay securely, track your
+              LocalPulse connects customers with vetted local pros. Pay securely, track your
               booking, and leave verified reviews.
             </p>
             <div style={{ display: "flex", gap: "12px", marginTop: "24px", flexWrap: "wrap" }}>
               <a className="button primary" href="/listings">Explore services</a>
-              <a className="button ghost" href="/providers/dashboard">Become a provider</a>
+              <a className="button ghost" href="/providers/dashboard">Become a local pro</a>
             </div>
             <div className="category-row">
               {categories.map((category) => (
@@ -115,7 +115,7 @@ export default function HomePage() {
               </div>
               <div>
                 <Badge tone="sun">24 hours</Badge>
-                <p className="muted">Average provider response time.</p>
+                <p className="muted">Average local pro response time.</p>
               </div>
               <div>
                 <Badge tone="clay">4.8/5</Badge>
@@ -146,13 +146,13 @@ export default function HomePage() {
         >
           <div className="listing-grid">
             {[
-              "Discover vetted providers",
+              "Discover vetted local pros",
               "Book and pay in one step",
               "Track delivery and leave verified reviews"
             ].map((item) => (
               <div key={item} className="card">
                 <h3>{item}</h3>
-                <p className="muted">Designed to keep customers and providers protected.</p>
+                <p className="muted">Designed to keep customers and local pros protected.</p>
               </div>
             ))}
           </div>

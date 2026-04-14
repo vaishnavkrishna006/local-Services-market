@@ -6,10 +6,11 @@ import BookingForm from "@/components/BookingForm";
 export default async function ListingDetailPage({
   params
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const listing = await db.serviceListing.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       provider: { select: { name: true } },
       reviews: true
@@ -57,7 +58,7 @@ export default async function ListingDetailPage({
             {listing.highlights.length ? (
               listing.highlights.map((item) => <li key={item}>{item}</li>)
             ) : (
-              <li>Trusted local provider</li>
+              <li>Trusted local pro</li>
             )}
           </ul>
           <h3 style={{ marginTop: 16 }}>Requirements</h3>
