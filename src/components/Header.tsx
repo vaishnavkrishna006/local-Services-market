@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/current-user";
 
 const links = [
   { href: "/listings", label: "Explore" },
+  { href: "/interfaces", label: "Interfaces" },
   { href: "/providers/dashboard", label: "Provider" },
   { href: "/bookings", label: "Bookings" },
   { href: "/admin", label: "Admin" }

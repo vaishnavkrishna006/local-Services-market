@@ -1,51 +1,162 @@
 'use client';
 
+import { useMemo, useState } from "react";
+
+type InterfaceType = "CUSTOMER" | "PROVIDER" | "ADMIN";
+
+const interfaceConfig: Record<
+  InterfaceType,
+  {
+    title: string;
+    subtitle: string;
+    metrics: Array<{ label: string; value: string }>;
+    features: Array<{ title: string; description: string; status: "New" | "Live" | "Beta" }>;
+  }
+> = {
+  CUSTOMER: {
+    title: "Customer Interface",
+    subtitle: "Book trusted local services quickly.",
+    metrics: [
+      { label: "Bookings", value: "24" },
+      { label: "Saved Providers", value: "8" },
+      { label: "Avg. Rating", value: "4.8" }
+    ],
+    features: [
+      { title: "Smart Search", description: "Find providers by category and location.", status: "Live" },
+      { title: "Instant Booking", description: "Schedule services with one-click slots.", status: "Live" },
+      { title: "Offer Alerts", description: "Get notified on seasonal discounts.", status: "New" }
+    ]
+  },
+  PROVIDER: {
+    title: "Provider Interface",
+    subtitle: "Manage services, bookings, and earnings.",
+    metrics: [
+      { label: "Active Listings", value: "12" },
+      { label: "Pending Jobs", value: "5" },
+      { label: "Monthly Revenue", value: "₹92,400" }
+    ],
+    features: [
+      { title: "Service Dashboard", description: "Track listing performance in real time.", status: "Live" },
+      { title: "Calendar Sync", description: "Keep availability aligned automatically.", status: "Beta" },
+      { title: "Payout Summary", description: "See earnings and fee split clearly.", status: "Live" }
+    ]
+  },
+  ADMIN: {
+    title: "Admin Interface",
+    subtitle: "Monitor platform quality and activity.",
+    metrics: [
+      { label: "Total Users", value: "3,240" },
+      { label: "Open Reports", value: "14" },
+      { label: "Verified Providers", value: "1,105" }
+    ],
+    features: [
+      { title: "Moderation Queue", description: "Review listings and reports faster.", status: "Live" },
+      { title: "Fraud Signals", description: "Flag unusual payment behavior.", status: "New" },
+      { title: "Role Controls", description: "Manage user permissions safely.", status: "Live" }
+    ]
+  }
+};
+
 export default function BootstrapExample() {
+  const [activeInterface, setActiveInterface] = useState<InterfaceType>("CUSTOMER");
+  const [showOnlyLive, setShowOnlyLive] = useState(false);
+
+  const current = interfaceConfig[activeInterface];
+  const visibleFeatures = useMemo(() => {
+    if (!showOnlyLive) {
+      return current.features;
+    }
+    return current.features.filter((feature) => feature.status === "Live");
+  }, [current.features, showOnlyLive]);
+
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-8 mx-auto">
-          <div className="card">
-            <div className="card-header bg-primary text-white">
-              <h5 className="card-title mb-0">Bootstrap Integration Example</h5>
-            </div>
+    <div className="container py-4">
+      <div className="row g-4">
+        <div className="col-12">
+          <div className="card shadow-sm border-0">
             <div className="card-body">
-              <p className="lead">Bootstrap is now integrated into your Next.js project!</p>
-              
-              <h6 className="mt-4">Example Components:</h6>
-              <div className="btn-group mt-3" role="group">
-                <button type="button" className="btn btn-primary">Primary</button>
-                <button type="button" className="btn btn-success">Success</button>
-                <button type="button" className="btn btn-danger">Danger</button>
+              <h2 className="h4 mb-1">Multi-Interface Experience</h2>
+              <p className="text-muted mb-3">Switch between interfaces and preview dedicated feature sets.</p>
+
+              <div className="btn-group" role="group" aria-label="Interface selector">
+                {(["CUSTOMER", "PROVIDER", "ADMIN"] as InterfaceType[]).map((type) => (
+                  <button
+                    key={type}
+                    type="button"
+                    className={`btn ${activeInterface === type ? "btn-primary" : "btn-outline-primary"}`}
+                    onClick={() => setActiveInterface(type)}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-8">
+          <div className="card border-0 shadow-sm h-100">
+            <div className="card-body">
+              <h3 className="h5 mb-1">{current.title}</h3>
+              <p className="text-muted mb-4">{current.subtitle}</p>
+
+              <div className="row g-3 mb-4">
+                {current.metrics.map((metric) => (
+                  <div className="col-12 col-sm-4" key={metric.label}>
+                    <div className="p-3 rounded border bg-light h-100">
+                      <p className="small text-muted mb-1">{metric.label}</p>
+                      <p className="h5 mb-0">{metric.value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="alert alert-info mt-4" role="alert">
-                You can now use all Bootstrap components and utilities in your project!
+              <div className="form-check form-switch mb-3">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  id="show-live"
+                  checked={showOnlyLive}
+                  onChange={(event) => setShowOnlyLive(event.target.checked)}
+                />
+                <label className="form-check-label" htmlFor="show-live">
+                  Show only live features
+                </label>
               </div>
 
-              <div className="table-responsive mt-4">
-                <table className="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Feature</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>Bootstrap CSS</td>
-                      <td><span className="badge bg-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>Bootstrap JS</td>
-                      <td><span className="badge bg-success">Active</span></td>
-                    </tr>
-                    <tr>
-                      <td>Tailwind CSS</td>
-                      <td><span className="badge bg-success">Active</span></td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="list-group">
+                {visibleFeatures.map((feature) => (
+                  <div
+                    key={feature.title}
+                    className="list-group-item d-flex justify-content-between align-items-start gap-3"
+                  >
+                    <div>
+                      <p className="fw-semibold mb-1">{feature.title}</p>
+                      <p className="text-muted mb-0 small">{feature.description}</p>
+                    </div>
+                    <span className={`badge ${feature.status === "Live" ? "bg-success" : feature.status === "Beta" ? "bg-warning text-dark" : "bg-info text-dark"}`}>
+                      {feature.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-12 col-lg-4">
+          <div className="card border-0 shadow-sm h-100">
+            <div className="card-body">
+              <h3 className="h6">Quick Actions</h3>
+              <div className="d-grid gap-2 mt-3">
+                <button type="button" className="btn btn-primary">Open Dashboard</button>
+                <button type="button" className="btn btn-outline-secondary">View Analytics</button>
+                <button type="button" className="btn btn-outline-dark">Manage Settings</button>
+              </div>
+
+              <hr className="my-4" />
+              <div className="alert alert-success mb-0" role="alert">
+                Active interface: <strong>{activeInterface}</strong>
               </div>
             </div>
           </div>
