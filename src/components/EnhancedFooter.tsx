@@ -48,8 +48,8 @@ export default function EnhancedFooter() {
           <div className="col-md-3">
             <h6 className="fw-bold mb-3">Contact</h6>
             <ul className="list-unstyled small text-muted">
-              <li className="mb-2">📧 support@localpulse.com</li>
-              <li className="mb-2">📞 1-800-PULSE-123</li>
+              <li className="mb-2">📧 <a href="mailto:chandankrnishad2000@gmail.com" className="text-decoration-none text-muted">chandankrnishad2000@gmail.com</a></li>
+              <li className="mb-2">📞 <a href="tel:+916202770433" className="text-decoration-none text-muted">+91 6202770433</a></li>
               <li className="mb-2">🕐 Mon-Sun, 9AM-9PM IST</li>
             </ul>
           </div>
@@ -62,7 +62,7 @@ export default function EnhancedFooter() {
           <div className="col-md-6 text-md-end small">
             <Link href="#" className="text-decoration-none text-muted me-3">Privacy Policy</Link>
             <Link href="#" className="text-decoration-none text-muted me-3">Terms of Service</Link>
-            <Link href="#" className="text-decoration-none text-muted">Contact Us</Link>
+            <Link href="/contact" className="text-decoration-none text-muted">Contact Us</Link>
           </div>
         </div>
       </div>

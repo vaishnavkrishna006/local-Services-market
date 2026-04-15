@@ -6,6 +6,7 @@ const links = [
   { href: "/interfaces", label: "Interfaces" },
   { href: "/local-pros/dashboard", label: "Local Pro" },
   { href: "/bookings", label: "Bookings" },
+  { href: "/contact", label: "Contact" },
   { href: "/admin", label: "Admin" }
 ];
 
