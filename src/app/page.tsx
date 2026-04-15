@@ -1,17 +1,23 @@
 import ListingCard from "@/components/ListingCard";
 import Section from "@/components/Section";
 import Badge from "@/components/Badge";
-import CitySelector from "@/components/CitySelector";
-import { indianCities } from "@/lib/locations";
+import HeroSection from "@/components/HeroSection";
+import FeaturesSection from "@/components/FeaturesSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import CTASection from "@/components/CTASection";
+import EnhancedFooter from "@/components/EnhancedFooter";
+import ServicesSection from "@/components/ServicesSection";
+import CitiesSection from "@/components/CitiesSection";
 
 const sampleListings = [
   {
     id: "demo-1",
     title: "Premium Home Cleaning",
     category: "Home Care",
-    location: "Andheri, Mumbai",
+    location: "Mumbai, MH",
     durationMinutes: 180,
-    priceCents: 85000,
+    priceCents: 49999,
     currency: "inr",
     providerName: "Sparkle Co.",
     rating: 4.9,
@@ -21,9 +27,9 @@ const sampleListings = [
     id: "demo-2",
     title: "Private Math Tutoring",
     category: "Education",
-    location: "Koramangala, Bangalore",
+    location: "Bangalore, KA",
     durationMinutes: 60,
-    priceCents: 65000,
+    priceCents: 39999,
     currency: "inr",
     providerName: "Elevate Tutors",
     rating: 4.8,
@@ -33,100 +39,137 @@ const sampleListings = [
     id: "demo-3",
     title: "Mobile Auto Detailing",
     category: "Auto",
-    location: "Connaught Place, Delhi",
+    location: "Delhi, DL",
     durationMinutes: 120,
-    priceCents: 120000,
+    priceCents: 75000,
     currency: "inr",
-    providerName: "AutoShine India",
+    providerName: "SeaBreeze Auto",
     rating: 4.7,
     reviewCount: 52
   },
   {
     id: "demo-4",
-    title: "Yoga & Wellness Session",
+    title: "Professional Hair Styling",
     category: "Wellness",
-    location: "Banjara Hills, Hyderabad",
+    location: "Pune, MH",
     durationMinutes: 90,
-    priceCents: 45000,
+    priceCents: 29999,
     currency: "inr",
-    providerName: "ZenFit Studio",
+    providerName: "Salon Bliss",
     rating: 4.9,
     reviewCount: 203
   },
   {
     id: "demo-5",
-    title: "Wedding Event Planning",
-    category: "Events",
-    location: "T. Nagar, Chennai",
-    durationMinutes: 240,
-    priceCents: 250000,
+    title: "Yoga & Fitness Training",
+    category: "Wellness",
+    location: "Bangalore, KA",
+    durationMinutes: 60,
+    priceCents: 24999,
     currency: "inr",
-    providerName: "Grand Celebrations",
-    rating: 4.6,
-    reviewCount: 87
+    providerName: "FitLife Academy",
+    rating: 4.8,
+    reviewCount: 145
   },
   {
     id: "demo-6",
-    title: "Laptop & PC Repair",
+    title: "Web Development & Design",
     category: "Tech",
-    location: "Salt Lake, Kolkata",
-    durationMinutes: 60,
-    priceCents: 35000,
+    location: "Hyderabad, TG",
+    durationMinutes: 240,
+    priceCents: 150000,
     currency: "inr",
-    providerName: "TechFix Pro",
+    providerName: "CodeCraft Studio",
+    rating: 4.9,
+    reviewCount: 89
+  },
+  {
+    id: "demo-7",
+    title: "Event Planning & Coordination",
+    category: "Events",
+    location: "Chennai, TN",
+    durationMinutes: 480,
+    priceCents: 200000,
+    currency: "inr",
+    providerName: "Elite Events Co.",
+    rating: 4.7,
+    reviewCount: 67
+  },
+  {
+    id: "demo-8",
+    title: "AC Installation & Repair",
+    category: "Home Care",
+    location: "Kolkata, WB",
+    durationMinutes: 120,
+    priceCents: 59999,
+    currency: "inr",
+    providerName: "Cool Comfort Services",
+    rating: 4.6,
+    reviewCount: 98
+  },
+  {
+    id: "demo-9",
+    title: "Photography & Videography",
+    category: "Events",
+    location: "Mumbai, MH",
+    durationMinutes: 300,
+    priceCents: 120000,
+    currency: "inr",
+    providerName: "Capture Moments",
+    rating: 4.9,
+    reviewCount: 124
+  },
+  {
+    id: "demo-10",
+    title: "Car Wash & Maintenance",
+    category: "Auto",
+    location: "Ahmedabad, GJ",
+    durationMinutes: 60,
+    priceCents: 15999,
+    currency: "inr",
+    providerName: "Quick Shine Auto",
     rating: 4.8,
-    reviewCount: 145
+    reviewCount: 178
+  },
+  {
+    id: "demo-11",
+    title: "Cooking Classes - Indian Cuisine",
+    category: "Education",
+    location: "Delhi, DL",
+    durationMinutes: 120,
+    priceCents: 34999,
+    currency: "inr",
+    providerName: "Flavor Academy",
+    rating: 4.9,
+    reviewCount: 156
+  },
+  {
+    id: "demo-12",
+    title: "Electrical & Plumbing Repairs",
+    category: "Home Care",
+    location: "Jaipur, RJ",
+    durationMinutes: 60,
+    priceCents: 19999,
+    currency: "inr",
+    providerName: "Pro Fix Services",
+    rating: 4.7,
+    reviewCount: 201
   }
 ];
 
 const categories = ["Home Care", "Wellness", "Education", "Events", "Auto", "Tech"];
+const cities = ["Mumbai, MH", "Bangalore, KA", "Delhi, DL", "Pune, MH", "Hyderabad, TG", "Chennai, TN", "Kolkata, WB", "Ahmedabad, GJ", "Jaipur, RJ"];
 
 export default function HomePage() {
   return (
     <div>
-      <section className="hero">
-        <div className="container hero-grid">
-          <div>
-            <p className="eyebrow">Trusted local pros</p>
-            <h1>Book verified services in minutes, not days.</h1>
-            <p className="muted">
-              LocalPulse connects customers with vetted local pros. Pay securely, track your
-              booking, and leave verified reviews.
-            </p>
-            <div style={{ display: "flex", gap: "12px", marginTop: "24px", flexWrap: "wrap" }}>
-              <a className="button primary" href="/listings">Explore services</a>
-              <a className="button ghost" href="/providers/dashboard">Become a local pro</a>
-            </div>
-            <div className="category-row">
-              {categories.map((category) => (
-                <span key={category} className="pill">
-                  {category}
-                </span>
-              ))}
-            </div>
-            <CitySelector cities={indianCities} />
-          </div>
-          <div className="hero-card">
-            <h3>Live marketplace stats</h3>
-            <div style={{ display: "grid", gap: "12px", marginTop: "16px" }}>
-              <div>
-                <Badge tone="mint">98% on-time</Badge>
-                <p className="muted">Bookings completed successfully.</p>
-              </div>
-              <div>
-                <Badge tone="sun">24 hours</Badge>
-                <p className="muted">Average local pro response time.</p>
-              </div>
-              <div>
-                <Badge tone="clay">4.8/5</Badge>
-                <p className="muted">Verified customer ratings.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorksSection />
+      
+      <ServicesSection />
 
-      <div className="container">
+      <div className="container py-5">
         <Section
           eyebrow="Popular now"
           title="Explore high-demand services"
@@ -138,26 +181,12 @@ export default function HomePage() {
             ))}
           </div>
         </Section>
-
-        <Section
-          eyebrow="How it works"
-          title="From discovery to payout, in one flow"
-          subtitle="Built for trust, speed, and accountability."
-        >
-          <div className="listing-grid">
-            {[
-              "Discover vetted local pros",
-              "Book and pay in one step",
-              "Track delivery and leave verified reviews"
-            ].map((item) => (
-              <div key={item} className="card">
-                <h3>{item}</h3>
-                <p className="muted">Designed to keep customers and local pros protected.</p>
-              </div>
-            ))}
-          </div>
-        </Section>
       </div>
+
+      <CitiesSection />
+      <TestimonialsSection />
+      <CTASection />
+      <EnhancedFooter />
     </div>
   );
 }

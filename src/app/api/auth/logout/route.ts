@@ -3,12 +3,12 @@ import { cookies } from "next/headers";
 import { revokeSession } from "@/lib/auth";
 
 export async function POST() {
-  const token = cookies().get("session")?.value;
+  const token = (await cookies()).get("session")?.value;
   if (token) {
     await revokeSession(token);
   }
 
-  cookies().set("session", "", {
+  (await cookies()).set("session", "", {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",

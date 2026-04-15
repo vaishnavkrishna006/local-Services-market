@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { requireRole } from "@/lib/access";
 
-export async function GET(_: Request, context: { params: { id: string } }) {
+export async function GET(_: Request, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
   const booking = await db.booking.findUnique({
-    where: { id: context.params.id },
-    include: { listing: true, payment: true, customer: true, provider: true }
+    where: { id },
+    include: { listing: true, payment: true, customer: true, localPro: true }
   });
 
   if (!booking) {
@@ -15,9 +16,10 @@ export async function GET(_: Request, context: { params: { id: string } }) {
   return NextResponse.json({ booking });
 }
 
-export async function PATCH(request: Request, context: { params: { id: string } }) {
+export async function PATCH(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const user = await requireRole(["PROVIDER", "ADMIN"]);
+    const { id } = await context.params;
+    const user = await requireRole(["LOCAL_PRO", "ADMIN"]);
     const payload = await request.json();
     const status = payload.status;
 
@@ -25,12 +27,12 @@ export async function PATCH(request: Request, context: { params: { id: string } 
       return NextResponse.json({ error: "Missing status." }, { status: 400 });
     }
 
-    const booking = await db.booking.findUnique({ where: { id: context.params.id } });
+    const booking = await db.booking.findUnique({ where: { id } });
     if (!booking) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
     }
 
-    if (user.role === "PROVIDER" && booking.providerId !== user.id) {
+    if (user.role === "LOCAL_PRO" && booking.localProId !== user.id) {
       return NextResponse.json({ error: "Forbidden." }, { status: 403 });
     }
 

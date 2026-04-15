@@ -1,4 +1,4 @@
-import { PrismaClient, ListingStatus } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
@@ -6,81 +6,39 @@ const prisma = new PrismaClient();
 async function main() {
   const passwordHash = await hashPassword("Password123!");
 
-  // 1. Create a Local Pro User (Provider)
   const provider = await prisma.user.upsert({
-    where: { email: "rahul.pro@localpulse.in" },
+    where: { email: "provider@localpulse.dev" },
     update: {},
     create: {
-      name: "Rahul Sharma",
-      email: "rahul.pro@localpulse.in",
+      name: "Lena Provider",
+      email: "provider@localpulse.dev",
       passwordHash,
-      role: "PROVIDER",
-      providerProfile: {
+      role: "LOCAL_PRO",
+      localProProfile: {
         create: {
-          displayName: "Rahul Pro Services",
-          companyName: "Sharma Home Care",
-          bio: "Expert plumber and home maintenance specialist with 10+ years experience in Mumbai.",
-          location: "Andheri, Mumbai",
-          serviceArea: "Mumbai West",
-          yearsExperience: 10
+          displayName: "Lena Provider",
+          bio: "Trusted local service provider.",
+          location: "Austin, TX"
         }
       }
     }
   });
 
-  // 2. Create some Service Listings for India
-  const listings = [
-    {
-      title: "Deep Home Cleaning Mumbai",
-      description: "Professional multi-room cleaning service using premium disinfectants.",
+  await prisma.serviceListing.create({
+    data: {
+      localProId: provider.id,
+      title: "Home Cleaning Deluxe",
+      description: "Deep clean service with eco-friendly supplies.",
       category: "Home Care",
-      location: "Andheri, Mumbai",
-      serviceArea: "Mumbai West",
-      durationMinutes: 240,
-      highlights: ["Vetted Staff", "Premium Disinfectants", "6-Month Guarantee"],
-      requirements: ["Electricity access", "Water supply"],
-      priceCents: 150000, // ₹1,500
-      currency: "inr",
-      status: ListingStatus.ACTIVE
-    },
-    {
-      title: "AC Servicing (Split/Window)",
-      description: "Complete filter cleaning, gas check, and performance test for your AC.",
-      category: "Home Care",
-      location: "Powai, Mumbai",
-      serviceArea: "Mumbai Central",
-      durationMinutes: 90,
-      highlights: ["Experienced Technicians", "Quick Turnaround", "Filter replacement"],
-      requirements: ["Indoor unit accessibility"],
-      priceCents: 59900, // ₹599
-      currency: "inr",
-      status: ListingStatus.ACTIVE
-    },
-    {
-      title: "Personal Yoga Sessions Bangalore",
-      description: "One-on-one yoga and meditation sessions tailored to your fitness goals.",
-      category: "Health & Wellness",
-      location: "Koramangala, Bangalore",
-      serviceArea: "South Bangalore",
-      durationMinutes: 60,
-      highlights: ["Flexible timing", "Beginner friendly", "Pranayama included"],
-      requirements: ["Yoga mat"],
-      priceCents: 80000, // ₹800
-      currency: "inr",
-      status: ListingStatus.ACTIVE
+      location: "Austin, TX",
+      serviceArea: "Austin Metro",
+      durationMinutes: 180,
+      highlights: ["Eco-friendly products", "Background-checked team", "Same-day booking"],
+      requirements: ["Access to water", "Pets secured during service"],
+      priceCents: 9000,
+      status: "ACTIVE"
     }
-  ];
-
-  for (const listData of listings) {
-    await prisma.serviceListing.create({
-      data: {
-        ...listData,
-        providerId: provider.id
-      }
-    });
-  }
-
-  console.log("Database seeded successfully with Indian Local Pros! 🚀");
+  });
 }
 
 main()

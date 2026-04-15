@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/current-user";
 import { redirect } from "next/navigation";
 
-export default async function ProviderDashboard() {
+export default async function LocalProDashboard() {
   const user = await getCurrentUser();
 
   if (!user || user.role !== "PROVIDER") {
@@ -19,10 +19,10 @@ export default async function ProviderDashboard() {
             : "Log in to manage your listings and payouts."}
         </p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <Link href="/providers/listings/new" className="button primary">
+          <Link href="/local-pros/listings/new" className="button primary">
             Create new listing
           </Link>
-          <Link href="/providers/bookings" className="button outline">
+          <Link href="/local-pros/bookings" className="button outline">
             View bookings
           </Link>
           <form action="/api/stripe/connect" method="POST">

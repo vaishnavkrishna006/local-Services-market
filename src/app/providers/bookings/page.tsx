@@ -2,12 +2,12 @@ import { getCurrentUser } from "@/lib/current-user";
 import { db } from "@/lib/db";
 import { formatMoney } from "@/lib/utils";
 
-export default async function ProviderBookingsPage() {
+export default async function LocalProBookingsPage() {
   const user = await getCurrentUser();
 
   const bookings = user
     ? await db.booking.findMany({
-        where: { providerId: user.id },
+        where: { localProId: user.id },
         include: { listing: true, customer: true },
         orderBy: { createdAt: "desc" }
       })

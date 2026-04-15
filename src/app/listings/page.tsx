@@ -14,12 +14,12 @@ export default async function ListingsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const params = await searchParams;
-  const q = typeof params.q === "string" ? params.q : "";
-  const category = typeof params.category === "string" ? params.category : "";
-  const location = typeof params.location === "string" ? params.location : "";
-  const minPrice = parseNumber(typeof params.minPrice === "string" ? params.minPrice : undefined);
-  const maxPrice = parseNumber(typeof params.maxPrice === "string" ? params.maxPrice : undefined);
+  const resolvedParams = await searchParams;
+  const q = typeof resolvedParams.q === "string" ? resolvedParams.q : "";
+  const category = typeof resolvedParams.category === "string" ? resolvedParams.category : "";
+  const location = typeof resolvedParams.location === "string" ? resolvedParams.location : "";
+  const minPrice = parseNumber(typeof resolvedParams.minPrice === "string" ? resolvedParams.minPrice : undefined);
+  const maxPrice = parseNumber(typeof resolvedParams.maxPrice === "string" ? resolvedParams.maxPrice : undefined);
 
   const listings = await db.serviceListing.findMany({
     where: {
@@ -44,7 +44,7 @@ export default async function ListingsPage({
         : {})
     },
     include: {
-      provider: { select: { name: true } },
+      localPro: { select: { name: true } },
       reviews: true
     },
     orderBy: { createdAt: "desc" },
@@ -71,7 +71,7 @@ export default async function ListingsPage({
         durationMinutes: listing.durationMinutes,
         priceCents: listing.priceCents,
         currency: listing.currency,
-        providerName: listing.provider.name,
+        providerName: listing.localPro.name,
         rating,
         reviewCount: listing.reviews.length
       };
