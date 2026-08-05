@@ -1,0 +1,26 @@
+{
+  "planHash": "5f761c6cffc2bee80505ad305af718e56d48aeb2dfd22e4e836dc319da065ac1",
+  "phase": "baseline",
+  "recordedAtUtc": "2026-08-04T07:46:21.2560512Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": false,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "\u003Cspawn error: An error occurred trying to start process \u0027npm run build\u0027 with working directory \u0027c:\\Users\\vaish\\Music\\Local-Services-Marketplace-main\\Local-Services-Marketplace-main\u0027. The system cannot find the file specified.\u003E\n",
+        "durationMs": 102
+      }
+    ]
+  }
+}

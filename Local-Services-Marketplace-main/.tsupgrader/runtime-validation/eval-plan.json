@@ -1,0 +1,13 @@
+{
+  "name": "nextjs-runtime-validation",
+  "description": "Basic runtime validation for the Next.js app",
+  "projectType": "webapp",
+  "assertions": [
+    {
+      "name": "build",
+      "type": "command",
+      "command": "npm run build",
+      "expected": "success"
+    }
+  ]
+}
