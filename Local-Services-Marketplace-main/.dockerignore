@@ -1,0 +1,11 @@
+node_modules
+.next
+.git
+.gitignore
+Dockerfile*
+README.md
+AUTHENTICATION.md
+backend/storage
+backend/.env
+.env
+npm-debug.log
