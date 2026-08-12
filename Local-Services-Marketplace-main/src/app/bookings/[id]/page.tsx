@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { formatMoney } from "@/lib/utils";
-import { apiFetchServer } from "@/lib/api";
+import { apiFetchServer } from "@/lib/api-server";
 
 export default async function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

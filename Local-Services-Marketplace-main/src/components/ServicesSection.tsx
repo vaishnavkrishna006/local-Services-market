@@ -21,18 +21,16 @@ export default function ServicesSection() {
         <div className="row g-3">
           {services.map((service, idx) => (
             <div key={idx} className="col-12 col-sm-6 col-lg-3">
-              <a href="#" className="text-decoration-none">
-                <div className="card border-0 shadow-sm h-100 text-center transition" style={{ cursor: "pointer" }}>
-                  <div className="card-body">
-                    <div className="h1 mb-3">{service.icon}</div>
-                    <h5 className="card-title fw-bold text-dark">{service.name}</h5>
-                    <p className="text-muted small mb-3">{service.description}</p>
-                    <a href="#" className="btn btn-sm btn-outline-primary">
-                      Browse
-                    </a>
-                  </div>
+              <div className="card border-0 shadow-sm h-100 text-center transition" style={{ cursor: "pointer" }}>
+                <div className="card-body">
+                  <div className="h1 mb-3">{service.icon}</div>
+                  <h5 className="card-title fw-bold text-dark">{service.name}</h5>
+                  <p className="text-muted small mb-3">{service.description}</p>
+                  <a href="#" className="btn btn-sm btn-outline-primary">
+                    Browse
+                  </a>
                 </div>
-              </a>
+              </div>
             </div>
           ))}
         </div>

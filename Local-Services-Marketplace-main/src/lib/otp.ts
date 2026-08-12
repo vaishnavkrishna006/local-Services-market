@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { getDb } from "@/lib/db";
 
 const OTP_EXPIRES_IN = 10 * 60 * 1000; // 10 minutes in milliseconds
 const OTP_CODE_LENGTH = 6;
@@ -8,32 +8,30 @@ export function generateOTPCode(): string {
 }
 
 export async function createOTP(email: string) {
+  const db = await getDb();
+  const otpCollection = db.collection("otps");
+
   // Delete any existing OTP for this email
-  await db.oTP.deleteMany({
-    where: { email }
-  });
+  await otpCollection.deleteMany({ email });
 
   const code = generateOTPCode();
   const expiresAt = new Date(Date.now() + OTP_EXPIRES_IN);
 
-  const otp = await db.oTP.create({
-    data: {
-      email,
-      code,
-      expiresAt,
-      verified: false
-    }
+  const otp = await otpCollection.insertOne({
+    email,
+    code,
+    expiresAt,
+    verified: false,
+    createdAt: new Date()
   });
 
   return { code, expiresAt };
 }
 
 export async function verifyOTP(email: string, code: string) {
-  const otp = await db.oTP.findUnique({
-    where: {
-      email_code: { email, code }
-    }
-  });
+  const db = await getDb();
+  const otpCollection = db.collection("otps");
+  const otp = await otpCollection.findOne({ email, code });
 
   if (!otp) {
     return { valid: false, message: "Invalid OTP code" };
@@ -41,7 +39,7 @@ export async function verifyOTP(email: string, code: string) {
 
   if (otp.expiresAt < new Date()) {
     // Delete expired OTP
-    await db.oTP.delete({ where: { id: otp.id } });
+    await otpCollection.deleteOne({ _id: otp._id });
     return { valid: false, message: "OTP has expired" };
   }
 
@@ -50,10 +48,10 @@ export async function verifyOTP(email: string, code: string) {
   }
 
   // Mark OTP as verified
-  await db.oTP.update({
-    where: { id: otp.id },
-    data: { verified: true }
-  });
+  await otpCollection.updateOne(
+    { _id: otp._id },
+    { $set: { verified: true } }
+  );
 
   return { valid: true, message: "OTP verified" };
 }
