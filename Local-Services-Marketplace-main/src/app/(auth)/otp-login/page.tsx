@@ -39,7 +39,7 @@ export default function OTPLoginPage() {
       setExpiresAt(new Date(data.expiresAt));
       setStep("verify");
       setLoading(false);
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again.");
       setLoading(false);
     }
@@ -66,7 +66,7 @@ export default function OTPLoginPage() {
 
       setLoading(false);
       router.push("/listings");
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again.");
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getDb } from "@/lib/db";
-import { createSession, hashPassword, verifyPassword } from "@/lib/auth";
+import { createSession, hashPassword, generateId, validatePassword } from "@/lib/auth";
 import { registerSchema } from "@/lib/validators";
 
 const USERS_COLLECTION = "users";
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         role: 'CUSTOMER'
       };
 
-      const result = await dbInstance.collection(USERS_COLLECTION).insertOne(userData);
+      await dbInstance.collection(USERS_COLLECTION).insertOne(userData as any);
 
       if (role === 'LOCAL_PRO') {
         await dbInstance.collection(LOCAL_PRO_PROFILES_COLLECTION).insertOne({

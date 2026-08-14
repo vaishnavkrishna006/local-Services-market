@@ -17,7 +17,7 @@ export async function POST(request: Request) {
   let event;
   try {
     event = stripe.webhooks.constructEvent(body, signature, secret);
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Invalid signature." }, { status: 400 });
   }
 
@@ -28,12 +28,12 @@ export async function POST(request: Request) {
       const session = event.data.object as { id: string; metadata?: { bookingId?: string } };
       const bookingId = session.metadata?.bookingId;
       if (bookingId) {
-        await dbInstance.collection("payments").updateMany({
-          filter: { bookingId },
-          updates: { $set: { status: "PAID", stripeCheckoutSessionId: session.id } }
-        });
+        await dbInstance.collection("payments").updateMany(
+          { bookingId },
+          { $set: { status: "PAID", stripeCheckoutSessionId: session.id } }
+        );
         await dbInstance.collection("bookings").updateOne(
-          { _id: bookingId },
+          { _id: bookingId } as any,
           { $set: { status: "ACCEPTED" } }
         );
       }
@@ -43,10 +43,10 @@ export async function POST(request: Request) {
       const intent = event.data.object as { id: string; metadata?: { bookingId?: string } };
       const bookingId = intent.metadata?.bookingId;
       if (bookingId) {
-        await dbInstance.collection("payments").updateMany({
-          filter: { bookingId },
-          updates: { $set: { status: "FAILED", stripePaymentIntentId: intent.id } }
-        });
+        await dbInstance.collection("payments").updateMany(
+          { bookingId },
+          { $set: { status: "FAILED", stripePaymentIntentId: intent.id } }
+        );
       }
       break;
     }

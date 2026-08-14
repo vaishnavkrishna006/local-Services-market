@@ -20,23 +20,23 @@ export async function POST(request: Request) {
 
     const dbInstance = await getDb();
     const booking = await dbInstance.collection(BOOKINGS_COLLECTION).findOne({
-      filter: { _id: bookingId }
-    });
+      _id: bookingId
+    } as any);
 
     if (!booking || booking.customerId !== user._id) {
       return NextResponse.json({ error: "Booking not found." }, { status: 404 });
     }
 
     const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({
-      filter: { _id: booking.listingId }
-    });
+      _id: booking.listingId
+    } as any);
 
-    const localPro = await dbInstance.collection("users").findOne({
-      filter: { _id: booking.localProId }
-    });
+    if (!listing) {
+      return NextResponse.json({ error: "Listing not found." }, { status: 404 });
+    }
 
     const localProProfile = await dbInstance.collection("local_pro_profiles").findOne({
-      filter: { userId: booking.localProId }
+      userId: booking.localProId
     });
 
     const destination = localProProfile?.stripeAccountId;
@@ -86,12 +86,12 @@ export async function POST(request: Request) {
     });
 
     const payment = await dbInstance.collection(PAYMENTS_COLLECTION).findOne({
-      filter: { _id: booking.id }
+      bookingId: booking._id.toString()
     });
 
     if (payment) {
       await dbInstance.collection(PAYMENTS_COLLECTION).updateOne(
-        { _id: payment._id },
+        { _id: payment._id } as any,
         { 
           $set: {
             stripeCheckoutSessionId: session.id,

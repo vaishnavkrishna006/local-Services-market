@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { bookingSchema } from "@/lib/validators";
 import { requireRole } from "@/lib/access";
+import { generateId } from "@/lib/auth";
 
 const BOOKINGS_COLLECTION = "bookings";
 const LISTINGS_COLLECTION = "service_listings";
@@ -14,9 +15,7 @@ export async function GET() {
     const dbInstance = await getDb();
 
     const bookings = await dbInstance.collection(BOOKINGS_COLLECTION).find({
-      filter: {
-        $or: [{ customerId: user._id }, { localProId: user._id }]
-      }
+      $or: [{ customerId: user._id }, { localProId: user._id }]
     }).toArray();
 
     // Populate listings and payments for each booking
@@ -56,10 +55,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid input." }, { status: 400 });
     }
 
-    const listing = await db.serviceListing.findUnique({
-      where: { id: parsed.data.listingId },
-      include: { localPro: true }
-    });
+    const dbInstance = await getDb();
+
+    const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({
+      _id: parsed.data.listingId
+    } as any);
 
     if (!listing || listing.status !== "ACTIVE") {
       return NextResponse.json({ error: "Listing not available." }, { status: 404 });
@@ -67,34 +67,35 @@ export async function POST(request: Request) {
 
     const tipCents = parsed.data.tipCents ? Number(parsed.data.tipCents) : 0;
 
-    const booking = await db.booking.create({
-      data: {
-        listingId: listing.id,
-        customerId: user.id,
-        localProId: listing.localProId,
-        startAt: new Date(parsed.data.startAt),
-        endAt: new Date(parsed.data.endAt),
-        notes: parsed.data.notes,
-        totalCents: listing.priceCents,
-        tipCents
-      }
-    });
+    const bookingId = generateId();
+    await dbInstance.collection(BOOKINGS_COLLECTION).insertOne({
+      _id: bookingId,
+      listingId: listing._id,
+      customerId: user._id,
+      localProId: (listing as any).localProId,
+      startAt: new Date(parsed.data.startAt),
+      endAt: new Date(parsed.data.endAt),
+      notes: parsed.data.notes,
+      totalCents: listing.priceCents,
+      tipCents,
+      status: "PENDING"
+    } as any);
 
-    await db.payment.create({
-      data: {
-        bookingId: booking.id,
-        amountCents: booking.totalCents + tipCents,
-        currency: listing.currency,
-        tipCents,
-        status: "REQUIRES_PAYMENT"
-      }
-    });
+    await dbInstance.collection(PAYMENTS_COLLECTION).insertOne({
+      _id: generateId(),
+      bookingId,
+      amountCents: listing.priceCents + tipCents,
+      currency: listing.currency,
+      tipCents,
+      status: "REQUIRES_PAYMENT"
+    } as any);
 
-    await db.messageThread.create({
-      data: { bookingId: booking.id }
-    });
+    await dbInstance.collection(MESSAGE_THREADS_COLLECTION).insertOne({
+      _id: generateId(),
+      bookingId
+    } as any);
 
-    return NextResponse.json({ bookingId: booking.id });
+    return NextResponse.json({ bookingId });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (message === "UNAUTHORIZED") {

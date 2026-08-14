@@ -1,5 +1,6 @@
-import { Role } from "@prisma/client";
 import { getCurrentUser } from "@/lib/current-user";
+
+export type Role = "CUSTOMER" | "LOCAL_PRO" | "ADMIN";
 
 export async function requireUser() {
   const user = await getCurrentUser();

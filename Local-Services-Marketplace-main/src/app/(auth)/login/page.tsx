@@ -34,7 +34,7 @@ export default function LoginPage() {
 
       setLoading(false);
       router.push("/listings");
-    } catch (err) {
+    } catch {
       setError("Network error. Please try again.");
       setLoading(false);
     }

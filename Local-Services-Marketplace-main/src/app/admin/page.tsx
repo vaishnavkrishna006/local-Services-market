@@ -1,9 +1,16 @@
 import { apiFetchServer } from "@/lib/api-server";
 
+type Report = {
+  id: string;
+  listingTitle: string;
+  reason: string;
+  status: string;
+};
+
 export default async function AdminPage() {
   const res = await apiFetchServer("/api/reports");
   const data = res.ok ? await res.json() : { reports: [] };
-  const reports = data.reports ?? [];
+  const reports = (data.reports ?? []) as Report[];
 
   return (
     <div className="container section">

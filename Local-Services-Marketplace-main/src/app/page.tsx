@@ -1,6 +1,5 @@
 import ListingCard from "@/components/ListingCard";
 import Section from "@/components/Section";
-import Badge from "@/components/Badge";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
@@ -157,11 +156,7 @@ const sampleListings = [
   }
 ];
 
-const categories = ["Home Care", "Wellness", "Education", "Events", "Auto", "Tech"];
-const cities = ["Mumbai, MH", "Bangalore, KA", "Delhi, DL", "Pune, MH", "Hyderabad, TG", "Chennai, TN", "Kolkata, WB", "Ahmedabad, GJ", "Jaipur, RJ"];
-
-export default function HomePage() {
-  return (
+export default function HomePage() {  return (
     <div>
       <HeroSection />
       <FeaturesSection />

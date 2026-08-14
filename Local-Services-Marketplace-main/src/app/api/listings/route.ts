@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { listingSchema } from "@/lib/validators";
 import { requireRole } from "@/lib/access";
+import { generateId } from "@/lib/auth";
 
 const LISTINGS_COLLECTION = "service_listings";
 
@@ -97,17 +98,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid input." }, { status: 400 });
     }
 
-    const listing = await db.serviceListing.create({
-      data: {
-        ...parsed.data,
-        highlights: parsed.data.highlights ?? [],
-        requirements: parsed.data.requirements ?? [],
-        localProId: user.id,
-        status: "ACTIVE"
-      }
-    });
+    const dbInstance = await getDb();
+    const listingId = generateId();
+    await dbInstance.collection(LISTINGS_COLLECTION).insertOne({
+      _id: listingId,
+      ...parsed.data,
+      highlights: parsed.data.highlights ?? [],
+      requirements: parsed.data.requirements ?? [],
+      localProId: user._id,
+      status: "ACTIVE"
+    } as any);
 
-    return NextResponse.json({ id: listing.id });
+    return NextResponse.json({ id: listingId });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (message === "UNAUTHORIZED") {

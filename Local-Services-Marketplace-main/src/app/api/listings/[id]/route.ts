@@ -10,8 +10,8 @@ export async function GET(_: Request, context: { params: Promise<{ id: string }>
   const dbInstance = await getDb();
 
   const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({
-    filter: { _id: id }
-  });
+    _id: id
+  } as any);
 
   if (!listing) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -67,14 +67,14 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
     }
 
     const dbInstance = await getDb();
-    const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({ _id: id });
+    const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({ _id: id } as any);
 
     if (!listing || listing.localProId !== user._id) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
     }
 
     const updated = await dbInstance.collection(LISTINGS_COLLECTION).findOneAndUpdate(
-      { _id: id },
+      { _id: id } as any,
       { $set: parsed.data },
       { returnDocument: "after" }
     );
@@ -102,14 +102,14 @@ export async function DELETE(_: Request, context: { params: Promise<{ id: string
     const user = await requireRole("LOCAL_PRO");
 
     const dbInstance = await getDb();
-    const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({ _id: id });
+    const listing = await dbInstance.collection(LISTINGS_COLLECTION).findOne({ _id: id } as any);
 
     if (!listing || listing.localProId !== user._id) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
     }
 
     await dbInstance.collection(LISTINGS_COLLECTION).updateOne(
-      { _id: id },
+      { _id: id } as any,
       { $set: { status: "PAUSED" } }
     );
 

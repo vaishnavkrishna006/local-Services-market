@@ -12,8 +12,8 @@ export async function GET(_: Request, context: { params: Promise<{ id: string }>
   const dbInstance = await getDb();
 
   const booking = await dbInstance.collection(BOOKINGS_COLLECTION).findOne({
-    filter: { _id: id }
-  });
+    _id: id
+  } as any);
 
   if (!booking) {
     return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -51,7 +51,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     }
 
     const dbInstance = await getDb();
-    const booking = await dbInstance.collection(BOOKINGS_COLLECTION).findOne({ _id: id });
+    const booking = await dbInstance.collection(BOOKINGS_COLLECTION).findOne({ _id: id } as any);
 
     if (!booking) {
       return NextResponse.json({ error: "Not found." }, { status: 404 });
@@ -62,7 +62,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
     }
 
     const updated = await dbInstance.collection(BOOKINGS_COLLECTION).findOneAndUpdate(
-      { _id: id },
+      { _id: id } as any,
       { $set: { status } },
       { returnDocument: "after" }
     );

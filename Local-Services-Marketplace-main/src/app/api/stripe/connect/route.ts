@@ -14,7 +14,7 @@ export async function POST() {
 
     const dbInstance = await getDb();
     const profile = await dbInstance.collection(LOCAL_PRO_PROFILES_COLLECTION).findOne({
-      filter: { userId: user._id }
+      userId: user._id
     });
 
     const accountId = profile?.stripeAccountId
@@ -26,8 +26,9 @@ export async function POST() {
 
     if (!profile?.stripeAccountId) {
       await dbInstance.collection(LOCAL_PRO_PROFILES_COLLECTION).updateOne(
-        { _id: profile._id },
-        { $set: { stripeAccountId: accountId } }
+        { userId: user._id },
+        { $set: { stripeAccountId: accountId } },
+        { upsert: true }
       );
     }
 

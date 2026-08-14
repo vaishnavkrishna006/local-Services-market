@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { reviewSchema } from "@/lib/validators";
 import { requireRole } from "@/lib/access";
+import { generateId } from "@/lib/auth";
 
 const REVIEWS_COLLECTION = "reviews";
 const BOOKINGS_COLLECTION = "bookings";
@@ -19,8 +20,9 @@ export async function POST(request: Request) {
     const dbInstance = await getDb();
 
     const booking = await dbInstance.collection(BOOKINGS_COLLECTION).findOne({
-      filter: { _id: parsed.data.bookingId, customerId: user._id }
-    });
+      _id: parsed.data.bookingId,
+      customerId: user._id
+    } as any);
 
     if (!booking) {
       return NextResponse.json({ error: "Booking not found." }, { status: 404 });
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
       rating: parsed.data.rating,
       comment: parsed.data.comment,
       createdAt: new Date().toISOString()
-    });
+    } as any);
 
     return NextResponse.json({ review: { ...review, _id: reviewId } });
   } catch (error) {

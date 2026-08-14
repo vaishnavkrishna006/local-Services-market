@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/contexts/AuthContext';
-import { Role } from '@prisma/client';
+import type { Role } from '@/lib/access';
 import { ReactNode } from 'react';
 import Link from 'next/link';
 

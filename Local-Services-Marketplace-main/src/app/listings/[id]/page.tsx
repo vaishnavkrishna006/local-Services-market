@@ -50,7 +50,7 @@ export default async function ListingDetailPage({
           <h3>Highlights</h3>
           <ul className="detail-list">
             {listing.highlights.length ? (
-              listing.highlights.map((item) => <li key={item}>{item}</li>)
+              listing.highlights.map((item: string) => <li key={item}>{item}</li>)
             ) : (
               <li>Trusted local provider</li>
             )}
@@ -58,7 +58,7 @@ export default async function ListingDetailPage({
           <h3 style={{ marginTop: 16 }}>Requirements</h3>
           <ul className="detail-list">
             {listing.requirements.length ? (
-              listing.requirements.map((item) => <li key={item}>{item}</li>)
+              listing.requirements.map((item: string) => <li key={item}>{item}</li>)
             ) : (
               <li>No special requirements.</li>
             )}

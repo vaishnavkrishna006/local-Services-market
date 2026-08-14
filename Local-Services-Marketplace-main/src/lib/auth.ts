@@ -1,9 +1,12 @@
 import bcrypt from "bcryptjs";
 import { randomBytes } from "crypto";
+import { ObjectId } from "mongodb";
 import { getDb } from "@/lib/db";
 
 const SESSION_DAYS = Number(process.env.SESSION_DAYS ?? 14);
 const SESSIONS_COLLECTION = "sessions";
+
+type UserId = string | ObjectId;
 
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
@@ -37,21 +40,26 @@ export function generateId() {
   return randomBytes(12).toString("hex");
 }
 
-export async function createSession(userId: string) {
+export function normalizeUserId(userId: UserId) {
+  return typeof userId === "string" ? userId : userId.toString();
+}
+
+export async function createSession(userId: UserId) {
+  const normalizedUserId = normalizeUserId(userId);
   const token = createSessionToken();
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   const dbInstance = await getDb();
 
   const result = await dbInstance.collection(SESSIONS_COLLECTION).insertOne({
     token,
-    userId,
+    userId: normalizedUserId,
     expiresAt
   });
 
   return {
     _id: result.insertedId.toString(),
     token,
-    userId,
+    userId: normalizedUserId,
     expiresAt
   };
 }

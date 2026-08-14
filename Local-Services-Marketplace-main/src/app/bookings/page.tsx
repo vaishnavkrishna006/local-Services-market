@@ -12,7 +12,7 @@ export default async function BookingsPage() {
       <div className="card">
         <h2>Your bookings</h2>
         <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
-          {bookings.map((booking) => (
+          {bookings.map((booking: any) => (
             <Link
               key={booking.id}
               href={`/bookings/${booking.id}`}

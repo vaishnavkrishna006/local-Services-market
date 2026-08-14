@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { messageSchema } from "@/lib/validators";
 import { requireUser } from "@/lib/access";
+import { generateId } from "@/lib/auth";
 
 const MESSAGES_COLLECTION = "messages";
 
@@ -17,7 +18,7 @@ export async function GET(request: Request) {
 
     const dbInstance = await getDb();
     const messages = await dbInstance.collection(MESSAGES_COLLECTION).find({
-      filter: { threadId }
+      threadId
     }).toArray();
 
     const allowed = messages.some((message) => message.senderId === user._id);
@@ -56,13 +57,13 @@ export async function POST(request: Request) {
     const dbInstance = await getDb();
 
     const messageId = generateId();
-    const message = await dbInstance.collection(MESSAGES_COLLECTION).insertOne({
+    await dbInstance.collection(MESSAGES_COLLECTION).insertOne({
       _id: messageId,
       threadId: parsed.data.threadId,
       senderId: user._id,
       body: parsed.data.body,
       createdAt: new Date().toISOString()
-    });
+    } as any);
 
     return NextResponse.json({
       message: {

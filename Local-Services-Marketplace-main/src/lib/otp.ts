@@ -1,7 +1,6 @@
 import { getDb } from "@/lib/db";
 
 const OTP_EXPIRES_IN = 10 * 60 * 1000; // 10 minutes in milliseconds
-const OTP_CODE_LENGTH = 6;
 
 export function generateOTPCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -17,7 +16,7 @@ export async function createOTP(email: string) {
   const code = generateOTPCode();
   const expiresAt = new Date(Date.now() + OTP_EXPIRES_IN);
 
-  const otp = await otpCollection.insertOne({
+  await otpCollection.insertOne({
     email,
     code,
     expiresAt,

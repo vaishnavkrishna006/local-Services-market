@@ -12,7 +12,7 @@ export default async function LocalProBookingsPage() {
         <h2>Local Pro bookings</h2>
         <p className="muted">Track upcoming jobs and payment status.</p>
         <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
-          {bookings.map((booking) => (
+          {bookings.map((booking: any) => (
             <div key={booking.id} className="card" style={{ background: "#f9fbfd" }}>
               <h3>{booking.listingTitle}</h3>
               <p className="muted">Customer: {booking.customerName ?? "Customer"}</p>

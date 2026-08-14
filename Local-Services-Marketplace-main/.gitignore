@@ -5,3 +5,9 @@ node_modules
 .env.development
 .env.production
 .DS_Store
+*.log
+*.txt
+*.tsbuildinfo
+prisma/
+backend/*.db
+backend/*.sqlite

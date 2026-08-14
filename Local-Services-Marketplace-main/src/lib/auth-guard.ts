@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { getDb } from "@/lib/db";
-import { Role } from "@prisma/client";
+import type { Role } from "@/lib/access";
 
 const SESSIONS_COLLECTION = "sessions";
 const USERS_COLLECTION = "users";
@@ -28,13 +28,17 @@ export async function requireAuth() {
 
     const user = await dbInstance.collection(USERS_COLLECTION).findOne({ _id: session.userId });
     return user;
-  } catch (error) {
+  } catch {
     throw new Error("Unauthorized: Session verification failed");
   }
 }
 
 export async function requireRole(allowedRoles: Role[]) {
   const user = await requireAuth();
+
+  if (!user) {
+    throw new Error("Unauthorized: No user found");
+  }
 
   if (!allowedRoles.includes(user.role)) {
     throw new Error(`Forbidden: Required role not found. Allowed: ${allowedRoles.join(", ")}`);
