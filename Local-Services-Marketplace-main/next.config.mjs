@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
-  outputFileTracingRoot: new URL('.', import.meta.url).pathname,
+  outputFileTracingRoot: process.cwd(),
   images: {
     remotePatterns: []
   }

@@ -8,7 +8,7 @@ const options = {
 };
 
 let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+let clientPromise: Promise<MongoClient> | null = null;
 
 if (process.env.NODE_ENV === "development") {
   const globalWithMongo = globalThis as typeof globalThis & {
@@ -23,9 +23,13 @@ if (process.env.NODE_ENV === "development") {
   client = new MongoClient(uri, options);
 }
 
-clientPromise = client.connect();
-
 export async function getDb() {
+  if (!clientPromise) {
+    clientPromise = client.connect().catch((err) => {
+      clientPromise = null;
+      throw err;
+    });
+  }
   const mongoClient = await clientPromise;
   const dbName = process.env.MONGODB_DB_NAME || "local_services_marketplace";
   return mongoClient.db(dbName);
